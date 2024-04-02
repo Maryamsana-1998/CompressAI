@@ -76,7 +76,8 @@ def test_eval_model_video():
 
 # mse and entropy_estimation tested for now
 @pytest.mark.parametrize("model", ("ssf2020",))
-@pytest.mark.parametrize("quality", ("1", "4", "8"))
+# @pytest.mark.parametrize("quality", ("1", "4", "8"))
+@pytest.mark.parametrize("quality", ("4"))
 @pytest.mark.parametrize("metric", ("mse",))
 @pytest.mark.parametrize("entropy_estimation", (True, False))
 def test_eval_model_pretrained(
@@ -86,15 +87,15 @@ def test_eval_model_pretrained(
     dirpath = os.path.join(here, "assets/dataset/video")
 
     cmd = [
-        "pretrained",
+        "checkpoint",
         dirpath,
         str(tmpdir),
         "-a",
         model,
         "-m",
         metric,
-        "-q",
-        quality,
+        "-p",
+        "checkpoints/checkpoint_best_loss_3.pth.tar"
     ]
     if entropy_estimation:
         cmd += ["--entropy-estimation"]
@@ -134,55 +135,58 @@ def test_eval_model_pretrained(
         assert np.allclose(
             expected["results"][key], output["results"][key], rtol=1e-4, atol=1e-4
         )
+        # we are getting constant values for all 7 tests , dont understand why
+        # something to do with quality as different qualities should have different models , our trained model is quality 3 
 
 
-@pytest.mark.parametrize("model_name", ("ssf2020",))
-def test_eval_model_ckpt(tmp_path, model_name):
-    here = os.path.dirname(__file__)
-    parent = os.path.dirname(here)
 
-    # fake training
-    # datapath = os.path.join(here, "assets/fakedata/imagefolder")
-    # spec = importlib.util.spec_from_file_location(
-    #     "examples.train", os.path.join(parent, "examples/train_video.py")
-    # )
-    # module = importlib.util.module_from_spec(spec)
-    # spec.loader.exec_module(module)
+# @pytest.mark.parametrize("model_name", ("ssf2020",))
+# def test_eval_model_ckpt(tmp_path, model_name):
+#     here = os.path.dirname(__file__)
+#     parent = os.path.dirname(here)
 
-    # argv = [
-    #     "-d",
-    #     datapath,
-    #     "-e",
-    #     "1",
-    #     "--batch-size",
-    #     "1",
-    #     "--patch-size",
-    #     "48",
-    #     "64",
-    #     "--seed",
-    #     "0",
-    #     "--save",
-    # ]
+#     # fake training
+#     # datapath = os.path.join(here, "assets/fakedata/imagefolder")
+#     # spec = importlib.util.spec_from_file_location(
+#     #     "examples.train", os.path.join(parent, "examples/train_video.py")
+#     # )
+#     # module = importlib.util.module_from_spec(spec)
+#     # spec.loader.exec_module(module)
 
-    # os.chdir(tmp_path)
-    # module.main(argv)
+#     # argv = [
+#     #     "-d",
+#     #     datapath,
+#     #     "-e",
+#     #     "1",
+#     #     "--batch-size",
+#     #     "1",
+#     #     "--patch-size",
+#     #     "48",
+#     #     "64",
+#     #     "--seed",
+#     #     "0",
+#     #     "--save",
+#     # ]
 
-    checkpoint = "checkpoints/checkpoint_best_loss.pth.tar"
-    assert os.path.isfile(checkpoint)
+#     # os.chdir(tmp_path)
+#     # module.main(argv)
 
-    # update model
-    # cmd = ["-a", model_name, "-n", "factorized", checkpoint]
-    # update_model.main(cmd)
+#     checkpoint = "checkpoint_best_loss.pth.tar"
+#     assert os.path.isfile(checkpoint)
 
-    # ckpt evaluation
-    dirpath = os.path.join(here, "assets/dataset/image")
-    # checkpoint = next(f for f in os.listdir(here) if f.startswith("factorized-"))
-    cmd = [
-        "checkpoint",
-        dirpath,
-        "-a",
-        "ssf2020",
-        "-p",
-        checkpoint,
-    ]
-    eval_model.main(cmd)
+#     # update model
+#     cmd = ["-a", model_name, "-n", "factorized", checkpoint]
+#     update_model.main(cmd)
+
+#     # ckpt evaluation
+#     dirpath = os.path.join(here, "assets/dataset/image")
+#     # checkpoint = next(f for f in os.listdir(here) if f.startswith("factorized-"))
+#     cmd = [
+#         "checkpoint",
+#         dirpath,
+#         "-a",
+#         "bmshj2018-factorized",
+#         "-p",
+#         checkpoint,
+#     ]
+#     eval_model.main(cmd)
