@@ -289,10 +289,10 @@ def test_epoch(epoch, test_dataloader, model, criterion):
     return loss.avg
 
 
-def save_checkpoint(state, is_best, filename="checkpoint_1.pth.tar"):
+def save_checkpoint(state, is_best, filename="checkpoint_8.pth.tar"):
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, "checkpoint_best_loss_1.pth.tar")
+        shutil.copyfile(filename, "checkpoint_best_loss_8.pth.tar")
 
 
 def parse_args(argv):
@@ -422,7 +422,7 @@ def main(argv):
         pin_memory=(device == "cuda"),
     )
 
-    net = video_models[args.model](quality=1)
+    net = video_models[args.model](quality=8)
     net = net.to(device)
 
     optimizer, aux_optimizer = configure_optimizers(net, args)
