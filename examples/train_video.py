@@ -396,7 +396,7 @@ def main(argv):
         split="train",
         transform=train_transforms,
     )
-    train_dataset.max_frames = 8
+    # train_dataset.max_frames = 8
     test_dataset = VideoFolder(
         args.dataset,
         rnd_interval=False,
@@ -404,7 +404,7 @@ def main(argv):
         split="test",
         transform=test_transforms,
     )
-    test_dataset.max_frames = 8
+    # test_dataset.max_frames = 8
     print('max frames :', train_dataset.max_frames)
     device = "cuda" if args.cuda and torch.cuda.is_available() else "cpu"
 

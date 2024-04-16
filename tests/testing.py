@@ -13,7 +13,7 @@ import glob
 eval_model = importlib.import_module("compressai.utils.video.eval_model.__main__")
 
 # Derive the directory containing the notebook file
-checkpoint = "checkpoints/checkpoint_best_loss_8.pth.tar"
+checkpoint = "../checkpoint_best_loss_8.pth.tar"
 assert os.path.isfile(checkpoint)
 model = 'ssf2020'
 metric = 'mse'
